@@ -14,3 +14,5 @@ TO DO list:
 - Figure out second heuristic
 - Implement the first heuristic
 - Implementing a Player Class (controlled by user) and a AI Class (controlled by random)
+
+hiiiii
