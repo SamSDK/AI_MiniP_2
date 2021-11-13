@@ -3,11 +3,11 @@ Meeting Notes Nov. 10
 2 heuristics: 
 1) Simple
   Less accurate and short
-  We’ll based ourselves on the heuristic used in the tic tac toe lab
+    winnable lines - winnable lines
 
 2) Complex  
   More accurate but takes longer to compute
-  [NEED TO FIGURE THIS ONE OUT]
+   We’ll based ourselves on the heuristic used in the tic tac toe lab
 
 TO DO list:
 - Implement the skeleton
