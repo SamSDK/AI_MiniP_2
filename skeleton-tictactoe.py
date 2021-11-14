@@ -29,14 +29,6 @@ class Game:
             print()
         print()
 
-    def is_valid(self, px, py):
-        if px < 0 or px > 2 or py < 0 or py > 2:
-            return False
-        elif self.current_state[px][py] != '.':
-            return False
-        else:
-            return True
-
     def consecutives(self, line, symbol):
         previous = "-"
         counter = 0
@@ -93,7 +85,22 @@ class Game:
             symbol = self.checkWin(np.flipud(self.current_state).diagonal(x))
             if (symbol != '.'):
                 return symbol
+
+        # Is whole board full?
+        for i in range(0, self.N):
+            for j in range(0, self.N):
+                # There's an empty field, we continue the game
+                if (self.current_state[i][j] == '.'):
+                    return None
         return '.'
+
+    def is_valid(self, px, py):
+        if px < 0 or px > self.N-1 or py < 0 or py > self.N-1:
+            return False
+        elif self.current_state[px][py] != '.':
+            return False
+        else:
+            return True
 
     def check_end(self):
         self.result = self.is_end()
