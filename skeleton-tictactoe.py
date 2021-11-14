@@ -55,11 +55,13 @@ class Game:
             
     print("n:" +str(N)+ " b: " +str(B)+ " s: " +str(S)+ " t: " +str(t))
     
-    player = 1
+    player = 0
+    d1 = 1
+    e = 1 
     
-    print("Player 1: human" if player == 1 else "AI") # TO BE DONE
+    print("Player 1: human" if player == 1 else "Player 1: AI d= " + str(d1) + " a= " + str(max) + " e1= " + str(e)) # TO BE DONE
     
-    print("Player 2: human" if player == 1 else "AI") # TO BE DONE
+    print("Player 2: human" if player == 1 else "Player 2: AI d= " + str(d2) + " a= " + str(max) + " e2= " + str(e))
     
     #print("Player 2:" + if player = 2: "Human" else "AI" + "d: " + str(d2) + " a=" + str(max) + " e= " )
 
@@ -361,13 +363,25 @@ class Game:
             if algo == self.MINIMAX:
                 if self.player_turn == 'X':
                     (_, x, y) = self.minimax(max=False)
+                    cTime = time.time()
+                    if cTime >= self.t:
+                        exit()
                 else:
                     (_, x, y) = self.minimax(max=True)
+                    cTime = time.time()
+                    if cTime >= self.t:
+                        exit()
             else:  # algo == self.ALPHABETA
                 if self.player_turn == 'X':
                     (m, x, y) = self.alphabeta(max=False)
+                    cTime = time.time()
+                    if cTime >= self.t:
+                        exit()
                 else:
                     (m, x, y) = self.alphabeta(max=True)
+                    cTime = time.time()
+                    if cTime >= self.t:
+                        exit()
 
             end = time.time()
             if (self.player_turn == 'X' and player_x == self.HUMAN) or (
@@ -380,19 +394,19 @@ class Game:
                 print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}\n')
                 
                 print(F'i Evaluation time: {round(end - start, 7)}s')
-                print(F'ii Total heuristic evaluations: ' + str(HE))
-                print(F'iii Evaluations by depth: {' + str(Ed) + '}')
-                print(F'iv  Average evaluation depth: ' + str(AEd))
-                print(F'v Average recursion depth:' + str(ARd))
-                print(F'vi  Average moves per game: ' + str(Ampg))
+                #print(F'ii Total heuristic evaluations: ' + str(HE))
+                #print(F'iii Evaluations by depth: {' + str(Ed) + '}')
+                #print(F'iv  Average evaluation depth: ' + str(AEd))
+                #print(F'v Average recursion depth:' + str(ARd))
+                #print(F'vi  Average moves per game: ' + str(Ampg))
             self.current_state[x][y] = self.player_turn
             self.switch_player()
 
 
 def main():
     g = Game(recommend=True)
-    g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI)
-    g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.HUMAN)
+    g.play(algo=Game.max, player_x=Game.AI, player_o=Game.AI)
+    #g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.HUMAN)
 
 
 if __name__ == "__main__":
@@ -404,3 +418,24 @@ if __name__ == "__main__":
 #sys.stdout = f
 #print "test"
 #f.close()
+
+
+#boilterplate for Test Stats
+
+    #print("n:" +str(N)+ " b: " +str(B)+ " s: " +str(S)+ " t: " +str(t))
+
+    #print("Player 1: d= " + str(d1) + " a= " + str(max))
+    
+    #print("Player 2: d= " + str(d2) + " a= " + str(max))
+    
+    #print(str(Totalgames) + "games")
+    
+    #print("Total wins for heuristic e1: " + str(WinsE1) + " (" + str(WinsE1/Totalgames * 100) + "%) " + e  )
+    #print("Total wins for heuristic e2: " + str(WinsE2) + " (" + str(WinsE2/Totalgames * 100) + "%) " + e  )
+    
+    #print(F'i Average evaluation time: ' + str(Aet))
+    #print(F'ii Total heuristic evaluations: ' + str(HE))
+    #print(F'iii Evaluations by depth: {' + str(Ed) + '}')
+    #print(F'iv  Average evaluation depth: ' + str(AEd))
+    #print(F'v Average recursion depth:' + str(ARd))
+    #print(F'vi  Average moves per game: ' + str(Ampg))
