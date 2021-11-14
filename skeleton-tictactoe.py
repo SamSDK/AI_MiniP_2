@@ -1,4 +1,6 @@
 # based on code from https://stackabuse.com/minimax-and-alpha-beta-pruning-in-python
+
+from random import randint
 import numpy as np
 import time
 
@@ -8,18 +10,37 @@ class Game:
     ALPHABETA = 1
     HUMAN = 2
     AI = 3
-    N = 3
+    N = 4
     S = 3
+    B = 2
 
-    def __init__(self, recommend=True):
-        self.initialize_game()
+    def __init__(self, recommend=True, blocksLocations=None):
+        self.initialize_game(blocksLocations)
         self.recommend = recommend
 
-    def initialize_game(self):
+    def initialize_game(self, blocksLocations=None):
         self.current_state = np.full((self.N,self.N), '.')
+
+        if (blocksLocations == None):
+            self.randomBlocks()
+        else:
+            self.insertBlocks(blocksLocations)
 
         # Player X always plays first
         self.player_turn = 'X'
+
+    def randomBlocks(self):
+        for i in range(0, self.B):
+            x = randint(0, self.N - 1)
+            y = randint(0, self.N - 1)
+            while (self.current_state[x][y] != '.'):
+                x = randint(0, self.N - 1)
+                y = randint(0, self.N - 1)
+            self.current_state[x][y] = '#'
+
+    def insertBlocks(self, blocksLocations):
+        for i in blocksLocations:
+            self.current_state[i[0]][i[1]] = '#'
 
     def draw_board(self):
         print()
@@ -151,8 +172,8 @@ class Game:
             return (1, x, y)
         elif result == '.':
             return (0, x, y)
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(0, self.N):
+            for j in range(0, self.N):
                 if self.current_state[i][j] == '.':
                     if max:
                         self.current_state[i][j] = 'O'
@@ -190,8 +211,8 @@ class Game:
             return (1, x, y)
         elif result == '.':
             return (0, x, y)
-        for i in range(0, 3):
-            for j in range(0, 3):
+        for i in range(0, self.N):
+            for j in range(0, self.N):
                 if self.current_state[i][j] == '.':
                     if max:
                         self.current_state[i][j] = 'O'
