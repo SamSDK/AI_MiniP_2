@@ -15,4 +15,5 @@ TO DO list:
 - Implement the first heuristic
 - Implementing a Player Class (controlled by user) and a AI Class (controlled by random)
 
-hiiiii
+b manual and automatic spread
+
