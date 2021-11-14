@@ -10,7 +10,7 @@ class Game:
     ALPHABETA = 1
     HUMAN = 2
     AI = 3
-    N = 4
+    N = 3
     S = 3
     B = 2
 
