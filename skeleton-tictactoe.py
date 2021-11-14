@@ -10,7 +10,7 @@ class Game:
     ALPHABETA = 1
     HUMAN = 2
     AI = 3
-    N = 3
+    N = 4
     S = 3
     B = 2
 
@@ -28,7 +28,8 @@ class Game:
 
         # Player X always plays first
         self.player_turn = 'X'
-
+        
+    # inserts b randome blocks
     def randomBlocks(self):
         for i in range(0, self.B):
             x = randint(0, self.N - 1)
@@ -38,6 +39,7 @@ class Game:
                 y = randint(0, self.N - 1)
             self.current_state[x][y] = '#'
 
+    # inserts given blocks on their coordinates
     def insertBlocks(self, blocksLocations):
         for i in blocksLocations:
             self.current_state[i[0]][i[1]] = '#'
@@ -50,7 +52,26 @@ class Game:
             print()
         print()
 
-    def consecutives(self, line, symbol):
+
+    # counts the number of the given symbol on a line
+    def symbolCount(self, line, symbol):
+        counter = 0
+        for char in line:
+            if char == symbol:
+                counter += 1
+        return counter
+
+
+    # Determines if there's a win on a line
+    def checkWin(self, line):
+        if max(self.consecutiveCount(line,'X')) >= self.S:
+            return 'X'
+        if max(self.consecutiveCount(line,'O')) >= self.S:
+            return 'O'
+        return '.'
+
+    # checkWin's helper function. Outputs a list with the count of consecutive of given symbol
+    def consecutiveCount(self, line, symbol):
         previous = "-"
         counter = 0
         consecutiveList = []
@@ -67,20 +88,6 @@ class Game:
             previous = char
             consecutiveList.append(counter)
         return consecutiveList
-
-    def symbolCount(self, line, symbol):
-        counter = 0
-        for char in line:
-            if char == symbol:
-                counter += 1
-        return counter
-
-    def checkWin(self, line):
-        if max(self.consecutives(line,'X')) >= self.S:
-            return 'X'
-        if max(self.consecutives(line,'O')) >= self.S:
-            return 'O'
-        return '.'
 
     def is_end(self):
         # vertical - checking each vertical line for a win
@@ -152,6 +159,53 @@ class Game:
         elif self.player_turn == 'O':
             self.player_turn = 'X'
         return self.player_turn
+
+    # goes through every line and counts the number of Xs and Ys and gives a h(n).
+    # A higher h(n) is better for X.
+    def heuristicSimple(self):
+        total = 0
+
+        print("verticals")
+        for x in range(0, self.N):
+            xCount = self.symbolCount(self.current_state[:, x], "X")
+            yCount = self.symbolCount(self.current_state[:, x], "O")
+            total += self.valueAttributor(xCount, yCount)
+        print()
+
+        print()
+        print("horrizontals")
+        for x in range(0, self.N):
+            xCount = self.symbolCount(self.current_state[x], "X")
+            yCount = self.symbolCount(self.current_state[x], "O")
+            total += self.valueAttributor(xCount, yCount)
+            print()
+
+        print("diagonal1")
+        for x in range(-self.N + 1, self.N):
+            xCount = self.symbolCount(self.current_state.diagonal(x), "X")
+            yCount = self.symbolCount(self.current_state.diagonal(x), "O")
+            total += self.valueAttributor(xCount, yCount)
+            print()
+
+        print("diagonal2")
+        for x in range(-self.N + 1, self.N):
+            xCount = self.symbolCount(np.flipud(self.current_state).diagonal(x), "X")
+            yCount = self.symbolCount(np.flipud(self.current_state).diagonal(x), "O")
+            total += self.valueAttributor(xCount, yCount)
+            print()
+
+        print(total)
+
+    # heuristicSimple's helper function. Gives the value of the heuristic based on the count of X and Y
+    def valueAttributor(self, countX, countO):
+        value = 0
+        if countO == 0 and countX == 0:
+            return 0
+        if countO > countX:
+            value = - pow(10, countO)
+        else:
+            value = pow(10, countX)
+        return value
 
     def minimax(self, max=False):
         # Minimizing for 'X' and maximizing for 'O'
