@@ -1,15 +1,27 @@
-# based on code from https://stackabuse.com/minimax-and-alpha-beta-pruning-in-python
-
 from random import randint
 import numpy as np
 import time
+import sys
 
 
 class Game:
-    MINIMAX = 0
-    ALPHABETA = 1
     HUMAN = 2
     AI = 3
+
+    MINIMAX = 0
+    ALPHABETA = 1
+    
+    t = 0
+    t = int(input('Enter t: '))
+    
+    while True:
+        try:
+               max = int(input('Enter 0 to use minimax or 1 to use alphabeta: '))
+               if max < 0 or max > 1:
+                   raise ValueError
+               break
+        except ValueError:
+            print("Please Enter Valid Number")
 
     N = 3
     while True:
@@ -21,7 +33,6 @@ class Game:
         except ValueError:
             print("Please Enter Valid Number")
 
-
     B = 3
     while True:
         try:
@@ -31,7 +42,7 @@ class Game:
             break
         except ValueError:
             print("Please Enter Valid Number")
-            
+
     S = 0
     while True:
         try:
@@ -42,8 +53,15 @@ class Game:
         except ValueError:
             print("Please Enter Valid Number")
             
-
-
+    print("n:" +str(N)+ " b: " +str(B)+ " s: " +str(S)+ " t: " +str(t))
+    
+    player = 1
+    
+    print("Player 1: human" if player == 1 else "AI") # TO BE DONE
+    
+    print("Player 2: human" if player == 1 else "AI") # TO BE DONE
+    
+    #print("Player 2:" + if player = 2: "Human" else "AI" + "d: " + str(d2) + " a=" + str(max) + " e= " )
 
     def __init__(self, recommend=True, blocksLocations=None):
         self.initialize_game(blocksLocations)
@@ -279,7 +297,7 @@ class Game:
                     self.current_state[i][j] = '.'
         return (value, x, y)
 
-    def alphabeta(self, alpha=-2, beta=2, max=False):
+    def alphabeta(self, alpha=-2, beta=2, max=True):
         # Minimizing for 'X' and maximizing for 'O'
         # Possible values are:
         # -1 - win for 'X'
@@ -350,6 +368,7 @@ class Game:
                     (m, x, y) = self.alphabeta(max=False)
                 else:
                     (m, x, y) = self.alphabeta(max=True)
+
             end = time.time()
             if (self.player_turn == 'X' and player_x == self.HUMAN) or (
                     self.player_turn == 'O' and player_o == self.HUMAN):
@@ -358,9 +377,14 @@ class Game:
                     print(F'Recommended move: x = {x}, y = {y}')
                 (x, y) = self.input_move()
             if (self.player_turn == 'X' and player_x == self.AI) or (self.player_turn == 'O' and player_o == self.AI):
-                print(F'Evaluation time: {round(end - start, 7)}s')
-                print(
-                    F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}')
+                print(F'Player {self.player_turn} under AI control plays: x = {x}, y = {y}\n')
+                
+                print(F'i Evaluation time: {round(end - start, 7)}s')
+                print(F'ii Total heuristic evaluations: ' + str(HE))
+                print(F'iii Evaluations by depth: {' + str(Ed) + '}')
+                print(F'iv  Average evaluation depth: ' + str(AEd))
+                print(F'v Average recursion depth:' + str(ARd))
+                print(F'vi  Average moves per game: ' + str(Ampg))
             self.current_state[x][y] = self.player_turn
             self.switch_player()
 
@@ -373,3 +397,10 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+#to print file
+#f = open("test.out", 'w')
+#sys.stdout = f
+#print "test"
+#f.close()
