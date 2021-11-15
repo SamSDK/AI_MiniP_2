@@ -1,6 +1,7 @@
 # based on code from https://stackabuse.com/minimax-and-alpha-beta-pruning-in-python
 #test123
 
+from math import inf
 from random import randint
 import numpy as np
 import time
@@ -12,7 +13,7 @@ class Game:
     HUMAN = 2
     AI = 3
     N = 4
-    S = 3
+    S = 4
     B = 0
 
     def __init__(self, recommend=True, blocksLocations=None):
@@ -201,9 +202,9 @@ class Game:
         return value
 
     def minimax(self, max=False):
-        value = 2
+        value = 999999999
         if max:
-            value = -2
+            value = -999999999
         x = None
         y = None
         result = self.is_end()
@@ -235,9 +236,9 @@ class Game:
 
     #fixed parameters need to accept input
     def alphabeta(self, d1, d2, alpha=-2, beta=2, max=False):
-        value = 2
+        value = 999999999
         if max:
-            value = -2
+            value = -999999999
         x = None
         y = None
         result = self.is_end()
@@ -283,6 +284,10 @@ class Game:
         return (value, x, y)
 
     def play(self, algo=None, player_x=None, player_o=None):
+        #depths
+        d1=3
+        d2=3
+        
         if algo == None:
             algo = self.ALPHABETA
         if player_x == None:
@@ -301,9 +306,9 @@ class Game:
                     (_, x, y) = self.minimax(max=True)
             else:  # algo == self.ALPHABETA
                 if self.player_turn == 'X':
-                    (m, x, y) = self.alphabeta(d1=3, d2=3, max=False)
+                    (m, x, y) = self.alphabeta(d1, d2, max=False)
                 else:
-                    (m, x, y) = self.alphabeta(d1=3, d2=3, max=True)
+                    (m, x, y) = self.alphabeta(d1, d2, max=True)
             end = time.time()
             if (self.player_turn == 'X' and player_x == self.HUMAN) or (
                     self.player_turn == 'O' and player_o == self.HUMAN):
