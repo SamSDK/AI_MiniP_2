@@ -12,8 +12,8 @@ class Game:
     ALPHABETA = 1
     HUMAN = 2
     AI = 3
-    N = 4
-    S = 4
+    N = 3
+    S = 3
     B = 0
 
     def __init__(self, recommend=True, blocksLocations=None):
@@ -81,6 +81,25 @@ class Game:
         for char in line:
             if char == symbol:
                 if previous == symbol:
+                    if counter == 0:
+                        counter = 1
+                    counter += 1
+                else:
+                    if counter != 0:
+                        consecutiveList.append(counter)
+                    counter = 0
+            previous = char
+            consecutiveList.append(counter)
+        return consecutiveList
+
+    # helper that checks for consecutive symbols including "."
+    def consecutivePlus(self, line, symbol):
+        previous = "-"
+        counter = 0
+        consecutiveList = []
+        for char in line:
+            if char == symbol or ".":
+                if previous == symbol or ".":
                     if counter == 0:
                         counter = 1
                     counter += 1
@@ -163,6 +182,31 @@ class Game:
             self.player_turn = 'X'
         return self.player_turn
 
+    def heuristicOther(self):
+        total = 0
+
+        for x in range(0, self.N):
+            xCount = self.symbolCount(self.current_state[:, x], "X")
+            yCount = self.symbolCount(self.current_state[:, x], "O")
+            total += self.valueAttributor(xCount, yCount)
+
+        for x in range(0, self.N):
+            xCount = self.symbolCount(self.current_state[x], "X")
+            yCount = self.symbolCount(self.current_state[x], "O")
+            total += self.valueAttributor(xCount, yCount)
+
+        for x in range(-self.N + 1, self.N):
+            xCount = self.symbolCount(self.current_state.diagonal(x), "X")
+            yCount = self.symbolCount(self.current_state.diagonal(x), "O")
+            total += self.valueAttributor(xCount, yCount)
+
+        for x in range(-self.N + 1, self.N):
+            xCount = self.symbolCount(np.flipud(self.current_state).diagonal(x), "X")
+            yCount = self.symbolCount(np.flipud(self.current_state).diagonal(x), "O")
+            total += self.valueAttributor(xCount, yCount)
+
+        return total
+
     # goes through every line and counts the number of Xs and Ys and gives a h(n).
     # A higher h(n) is better for X.
     def heuristicSimple(self):
@@ -201,32 +245,50 @@ class Game:
             value = pow(10, countX)
         return value
 
-    def minimax(self, max=False):
+    def minimax(self, d1, d2, max=False, heuristic=False):
         value = 999999999
         if max:
             value = -999999999
         x = None
         y = None
         result = self.is_end()
-        if result == 'X':
-            return (-1, x, y)
-        elif result == 'O':
-            return (1, x, y)
-        elif result == '.':
-            return (0, x, y)
+
+        if heuristic == True:
+            if result == 'X':
+                return (-1, x, y)
+            elif result == 'O':
+                return (1, x, y)
+            elif result == '.':
+                return (0, x, y)
+            elif d1 == 0:
+                return (self.heuristicSimple(), x, y)
+            elif d2 == 0:
+                return (self.heuristicSimple(), x, y)
+        else:
+            if result == 'X':
+                return (-1, x, y)
+            elif result == 'O':
+                return (1, x, y)
+            elif result == '.':
+                return (0, x, y)
+            elif d1 == 0:
+                return (self.heuristicSimple(), x, y)
+            elif d2 == 0:
+                return (self.heuristicSimple(), x, y)
+
         for i in range(0, self.N):
             for j in range(0, self.N):
                 if self.current_state[i][j] == '.':
                     if max:
                         self.current_state[i][j] = 'O'
-                        (v, _, _) = self.minimax(max=False)
+                        (v, _, _) = self.minimax(d1, d2-1, max=False)
                         if v > value:
                             value = v
                             x = i
                             y = j
                     else:
                         self.current_state[i][j] = 'X'
-                        (v, _, _) = self.minimax(max=True)
+                        (v, _, _) = self.minimax(d1-1, d2, max=True)
                         if v < value:
                             value = v
                             x = i
@@ -236,23 +298,37 @@ class Game:
 
     # the recursive call is (depth -1)
     # when either of the base cases are reached before a win is determined (d1,d2 == 0) we return the (heuristic,x,y)
-    def alphabeta(self, d1, d2, alpha=-2, beta=2, max=False):
+    def alphabeta(self, d1, d2, alpha=-2, beta=2, max=False, heuristic=False):
+
         value = 999999999
         if max:
             value = -999999999
         x = None
         y = None
         result = self.is_end()
-        if result == 'X':
-            return (-1, x, y)
-        elif result == 'O':
-            return (1, x, y)
-        elif result == '.':
-            return (0, x, y)
-        elif d1 == 0:
-            return (self.heuristicSimple(), x, y)
-        elif d1 == 0:
-            return (self.heuristicSimple(), x, y)
+
+        if heuristic == True:
+            if result == 'X':
+                return (-1, x, y)
+            elif result == 'O':
+                return (1, x, y)
+            elif result == '.':
+                return (0, x, y)
+            elif d1 == 0:
+                return (self.heuristicSimple(), x, y)
+            elif d2 == 0:
+                return (self.heuristicSimple(), x, y)
+        else:
+            if result == 'X':
+                return (-1, x, y)
+            elif result == 'O':
+                return (1, x, y)
+            elif result == '.':
+                return (0, x, y)
+            elif d1 == 0:
+                return (self.heuristicSimple(), x, y)
+            elif d2 == 0:
+                return (self.heuristicSimple(), x, y)
 
         for i in range(0, self.N):
             for j in range(0, self.N):
@@ -286,9 +362,10 @@ class Game:
 
     def play(self, algo=None, player_x=None, player_o=None):
         #depth for d1 is the X player, d2 is the O player
-        d1=3
-        d2=3
-        
+        d1=2
+        d2=9
+        heuris = True
+
         if algo == None:
             algo = self.ALPHABETA
         if player_x == None:
@@ -302,9 +379,9 @@ class Game:
             start = time.time()
             if algo == self.MINIMAX:
                 if self.player_turn == 'X':
-                    (_, x, y) = self.minimax(max=False)
+                    (_, x, y) = self.minimax(d1, d2, max=False)
                 else:
-                    (_, x, y) = self.minimax(max=True)
+                    (_, x, y) = self.minimax(d1, d2, max=True)
             else:  # algo == self.ALPHABETA
                 if self.player_turn == 'X':
                     (m, x, y) = self.alphabeta(d1, d2, max=False)
@@ -326,7 +403,7 @@ class Game:
 
 def main():
     g = Game(recommend=True)
-    g.play(algo=Game.ALPHABETA, player_x=Game.AI, player_o=Game.AI)
+    g.play(algo=Game.MINIMAX, player_x=Game.AI, player_o=Game.AI)
 
 if __name__ == "__main__":
     main()
