@@ -10,7 +10,7 @@ class Game:
     ALPHABETA = 1
     HUMAN = 2
     AI = 3
-    N = 4
+    N = 3
     S = 3
     B = 2
 
@@ -28,7 +28,7 @@ class Game:
 
         # Player X always plays first
         self.player_turn = 'X'
-        
+
     # inserts b randome blocks
     def randomBlocks(self):
         for i in range(0, self.B):
