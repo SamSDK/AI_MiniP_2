@@ -29,8 +29,9 @@ class Game:
 
         # Player X always plays first
         self.player_turn = 'X'
-        
-    # inserts b randome blocks
+
+    # inserts b random blocks
+    
     def randomBlocks(self):
         for i in range(0, self.B):
             x = randint(0, self.N - 1)
@@ -174,7 +175,7 @@ class Game:
         print()
 
         print()
-        print("horrizontals")
+        print("horizontals")
         for x in range(0, self.N):
             xCount = self.symbolCount(self.current_state[x], "X")
             yCount = self.symbolCount(self.current_state[x], "O")
@@ -195,6 +196,7 @@ class Game:
             total += self.valueAttributor(xCount, yCount)
             print()
 
+        return total
         print(total)
 
     # heuristicSimple's helper function. Gives the value of the heuristic based on the count of X and Y
