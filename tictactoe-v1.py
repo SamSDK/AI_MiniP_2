@@ -234,7 +234,8 @@ class Game:
                     self.current_state[i][j] = '.'
         return (value, x, y)
 
-    #fixed parameters need to accept input
+    # the recursive call is (depth -1)
+    # when either of the base cases are reached before a win is determined (d1,d2 == 0) we return the (heuristic,x,y)
     def alphabeta(self, d1, d2, alpha=-2, beta=2, max=False):
         value = 999999999
         if max:
@@ -284,7 +285,7 @@ class Game:
         return (value, x, y)
 
     def play(self, algo=None, player_x=None, player_o=None):
-        #depths
+        #depth for d1 is the X player, d2 is the O player
         d1=3
         d2=3
         
