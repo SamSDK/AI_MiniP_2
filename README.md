@@ -1,21 +1,10 @@
-Meeting Notes Nov. 10
+AI-Project-2 This repository is a term project for COMP 452 - Artificial Intelligence
 
-Github link:
-https://github.com/SamSDK/AI_MiniP_2
+Authors: Ruslan Dallin(40032001), Samaninder Singh(40133493), Kabin Wang(27295936)
 
-2 heuristics: 
-1) Simple
-  Less accurate and short
-    winnable lines - winnable lines
+Requirements: Python 3.7 (pypy preferably)
 
-2) Complex  
-  More accurate but takes longer to compute
-   We’ll based ourselves on the heuristic used in the tic tac toe lab
+Instructions: Run skeleton-tictactoe.py and follow prompts
 
-TO DO list:
-- Implement the skeleton
-- Figure out second heuristic
-- Implement the first heuristic
-- Implementing a Player Class (controlled by user) and a AI Class (controlled by random)
 
 
