@@ -1,0 +1,8 @@
+
+n:3 b: 1 s: 3 t: 60
+Player 1: d= 10 a= True
+Player 2: d= 10 a= True
+1 games
+Total wins for heuristic e1: 0 (0.0%) simple
+Total wins for heuristic e2: 0 (0.0%) complex
+

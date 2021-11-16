@@ -1,5 +1,8 @@
 Meeting Notes Nov. 10
 
+Github link:
+https://github.com/SamSDK/AI_MiniP_2
+
 2 heuristics: 
 1) Simple
   Less accurate and short
@@ -15,5 +18,4 @@ TO DO list:
 - Implement the first heuristic
 - Implementing a Player Class (controlled by user) and a AI Class (controlled by random)
 
-b manual and automatic spread
 
