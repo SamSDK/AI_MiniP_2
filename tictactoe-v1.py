@@ -12,9 +12,9 @@ class Game:
     ALPHABETA = 1
     HUMAN = 2
     AI = 3
-    N = 3
-    S = 3
-    B = 0
+    N = 6
+    S = 4
+    B = 6
 
     def __init__(self, recommend=True, blocksLocations=None):
         self.initialize_game(blocksLocations)
@@ -362,8 +362,8 @@ class Game:
 
     def play(self, algo=None, player_x=None, player_o=None):
         #depth for d1 is the X player, d2 is the O player
-        d1=2
-        d2=9
+        d1=6
+        d2=6
         heuris = True
 
         if algo == None:
@@ -379,14 +379,14 @@ class Game:
             start = time.time()
             if algo == self.MINIMAX:
                 if self.player_turn == 'X':
-                    (_, x, y) = self.minimax(d1, d2, max=False)
+                    (_, x, y) = self.minimax(d1, d2, max=False, heuristic = False)
                 else:
-                    (_, x, y) = self.minimax(d1, d2, max=True)
+                    (_, x, y) = self.minimax(d1, d2, max=True, heuristic = False)
             else:  # algo == self.ALPHABETA
                 if self.player_turn == 'X':
-                    (m, x, y) = self.alphabeta(d1, d2, max=False)
+                    (m, x, y) = self.alphabeta(d1, d2, max=False, heuristic = False)
                 else:
-                    (m, x, y) = self.alphabeta(d1, d2, max=True)
+                    (m, x, y) = self.alphabeta(d1, d2, max=True, heuristic = False)
             end = time.time()
             if (self.player_turn == 'X' and player_x == self.HUMAN) or (
                     self.player_turn == 'O' and player_o == self.HUMAN):
