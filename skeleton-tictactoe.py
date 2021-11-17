@@ -461,6 +461,10 @@ class Game:
             value = pow(10, countX)
         return value
 
+    #the recursive call of the function minimax decrements the max depths we set by 1 each time it is called
+    #when either of the base cases are reached (when depth 1 or depth 2 are decremented to '0') before a winner is determined
+    #we use one of our heursitic functions to return the approximated value of the decision along with x and y
+    #depth 2 represents the 'O' players turn while depth 1 represents the 'X' players turn 
     def minimax(self, heurstic, d1, d2, max=False):
         value = 999999999
         if max:
@@ -512,8 +516,10 @@ class Game:
                     self.current_state[i][j] = '.'
         return (value, x, y)
 
-    # the recursive call is (depth -1)
-    # when either of the base cases are reached before a win is determined (d1,d2 == 0) we return the (heuristic,x,y)
+    #the recursive call of the function alphabeta decrements the max depths we set by 1 each time it is called
+    #when either of the base cases are reached (when depth 1 or depth 2 are decremented to '0') before a winner is determined
+    #we use one of our heursitic functions to return the approximated value of the decision along with x and y
+    #depth 2 represents the 'O' players turn while depth 1 represents the 'X' players turn 
     def alphabeta(self, heuristic, d1, d2, alpha=-2, beta=2, max=False):
 
         value = 999999999
