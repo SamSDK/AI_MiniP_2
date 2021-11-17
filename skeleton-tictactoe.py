@@ -464,7 +464,7 @@ class Game:
     #the recursive call of the function minimax decrements the max depths we set by 1 each time it is called
     #when either of the base cases are reached (when depth 1 or depth 2 are decremented to '0') before a winner is determined
     #we use one of our heursitic functions to return the approximated value of the decision along with x and y
-    #depth 2 represents the 'O' players turn while depth 1 represents the 'X' players turn 
+    #depth 2 represents the 'O' players depth while depth 1 represents the 'X' players depth 
     def minimax(self, heurstic, d1, d2, max=False):
         value = 999999999
         if max:
@@ -519,7 +519,7 @@ class Game:
     #the recursive call of the function alphabeta decrements the max depths we set by 1 each time it is called
     #when either of the base cases are reached (when depth 1 or depth 2 are decremented to '0') before a winner is determined
     #we use one of our heursitic functions to return the approximated value of the decision along with x and y
-    #depth 2 represents the 'O' players turn while depth 1 represents the 'X' players turn 
+    #depth 2 represents the 'O' players depth while depth 1 represents the 'X' players depth 
     def alphabeta(self, heuristic, d1, d2, alpha=-2, beta=2, max=False):
 
         value = 999999999
